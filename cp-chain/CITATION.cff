@@ -1,0 +1,10 @@
+cff-version: 1.2.0
+message: If you use this software in your work, please cite it using the following metadata
+title: The CpChain Monorepo
+authors:
+- name: The CpChain Collective
+version: 1.0.0
+year: 2020
+url: https://github.com/cpchain-network/cp-chain
+repository: https://github.com/cpchain-network/cp-chain
+license: MIT

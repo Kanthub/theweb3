@@ -1,0 +1,30 @@
+# All the files we depend on. We are using a negative pattern to not include anything by accident.
+# node_modules, packages (contains git submodules and node modules etc.), devnet dirs etc. all add up a lot.
+*
+
+!/cannon
+!/devnet-sdk
+!/op-batcher
+!/op-chain-ops
+!/cp-deployer
+!/op-dripper
+!/op-challenger
+!/packages/contracts-bedrock/snapshots
+!/op-dispute-mon
+!/op-conductor
+!/cp-node
+!/op-preimage
+!/cp-program
+!/op-proposer
+!/cp-service
+!/cp-supervisor
+!/op-wheel
+!/op-alt-da
+!/go.mod
+!/go.sum
+!/justfiles
+!/mise.toml
+
+**/bin
+**/testdata
+**/tests
