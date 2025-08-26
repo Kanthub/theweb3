@@ -1,0 +1,52 @@
+syntax = "proto3";
+
+option go_package = "./proto/market";
+
+message Exchange {
+  string name = 1;
+}
+
+message TokenSymbol {
+  string base_asset = 1;
+  string qoute_asset = 2;
+  repeated Exchange exchanges = 3;
+}
+
+message MarketPrice {
+  string base_asset = 1;        // 基础资产
+  string qoute_asset = 2;       // 报价资产
+  string market_price = 3;
+  string sell_price = 4;
+  string buy_price  = 5;
+  string rate = 6;             // 涨跌幅
+  string hours24_trade = 7;
+}
+
+message SupportSymbolListReq {
+  string token = 1;
+  string base_asset = 2;
+  string qoute_asset = 3;
+}
+
+message SupportSymbolListRep {
+  uint64 code = 1;
+  string msg = 2;
+  repeated TokenSymbol tokenSymbols = 3;
+}
+
+message MarketPriceListReq {
+  string token = 1;
+  string base_asset = 2;
+  string qoute_asset = 3;
+}
+
+message MarketPriceListRep {
+  uint64 code = 1;
+  string msg = 2;
+  repeated MarketPrice marketPrices = 3;
+}
+
+service MarketPriceService {
+  rpc getSupportSymbolList(SupportSymbolListReq) returns (SupportSymbolListRep) {}
+  rpc getMarketPriceList(MarketPriceListReq) returns (MarketPriceListRep) {}
+}
