@@ -1,0 +1,88 @@
+package config
+
+import (
+	"os"
+
+	"gopkg.in/yaml.v2"
+)
+
+type Config struct {
+	Migrations          string       `yaml:"migrations"`
+	PolygonRpc          string       `yaml:"polygon_rpc"`
+	RpcUrl              string       `yaml:"rpc_url"`
+	PolygonChainId      string       `yaml:"polygon_chain_id"`
+	HttpHost            string       `yaml:"http_host"`
+	HttpPort            int          `yaml:"http_port"`
+	DbHost              string       `yaml:"db_host"`
+	DbPort              int          `yaml:"db_port"`
+	DbName              string       `yaml:"db_name"`
+	DbUser              string       `yaml:"db_user"`
+	DbPassword          string       `yaml:"db_password"`
+	MetricsHost         string       `yaml:"metrics_host"`
+	MetricsPort         int          `yaml:"metrics_port"`
+	StartBlock          uint64       `yaml:"start_block"`
+	EventStartBlock     uint64       `yaml:"event_start_block"`
+	Contracts           []string     `yaml:"contracts"`
+	AliConfig           AliConfig    `yaml:"ali_config"`
+	ContractInfo        ContractInfo `yaml:"contract_info"`
+	USDT                string       `yaml:"usdt"`
+	FCC                 string       `yaml:"fcc"`
+	EncryptedPrivateKey string       `yaml:"encrypted_private_key"`
+	Nonce               string       `yaml:"nonce"`
+	KeyPhrase           string       `yaml:"key_phrase"`
+}
+
+type AliConfig struct {
+	RegionId        string `yaml:"region_id"`
+	AccessKeyId     string `yaml:"access_key_id"`
+	AccessKeySecret string `yaml:"access_key_secret"`
+}
+
+type ContractInfo struct {
+	FccToken             string `yaml:"fcc_token"`
+	UsdtToken            string `yaml:"usdt_token"`
+	RedemptionPool       string `yaml:"redemption_pool"`
+	DirectSalePool       string `yaml:"direct_sale_pool"`
+	InvestorSalePool     string `yaml:"investor_sale_pool"`
+	NFTManager           string `yaml:"nft_manager"`
+	FishcakeEventManager string `yaml:"fishcake_event_manager"`
+}
+
+func New(path string) (*Config, error) {
+	var config = new(Config)
+	data, err := os.ReadFile(path) // 读取path内的内容
+	if err != nil {
+		return nil, err
+	}
+	err = yaml.Unmarshal(data, config) // data加载到config
+	if err != nil {
+		return nil, err
+	}
+	return config, nil
+}
+
+/*原生 YAML 解析：
+
+只支持一种格式（YAML），如果以后换 TOML、JSON，需要换解析器
+
+使用场景：
+项目结构简单，不需要热更新配置。
+
+配置只来源于文件。
+
+不需要命令行参数或环境变量。
+
+
+
+✅ 总结对比
+特性/框架	原生 YAML	Viper + Cobra	urfave/cli
+配置文件格式支持	YAML	TOML / YAML / JSON	任意（需手动解析）
+环境变量支持	❌ 需手写逻辑	✅ 自动绑定	✅ 显式绑定（EnvVars）
+命令行参数解析	❌ 无	✅ 子命令丰富	✅ 简单明了
+热加载支持	❌ 无	✅ 支持	❌ 不支持
+框架复杂度	⭐ 极简	⭐⭐⭐ 企业级	⭐⭐ 中等
+适合场景	小型服务/脚本	后台服务、链下服务	工具型服务、脚本执行类任务
+
+
+
+*/
